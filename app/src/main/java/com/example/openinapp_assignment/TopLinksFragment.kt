@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.openinapp_assignment.api.RetrofitInstance
 import com.example.openinapp_assignment.model.MainDataClass
-import com.example.openinapp_assignment.model.TopLink
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,7 +20,7 @@ import retrofit2.Response
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-private lateinit var adapter : LinkRecyclerViewAdapter
+private lateinit var adapter : TopLinkRecyclerViewAdapter
 private lateinit var recyclerView : RecyclerView
 
 /**
@@ -82,13 +81,14 @@ class TopLinksFragment : Fragment() {
         RetrofitInstance.apiService.getData().enqueue(object : Callback<MainDataClass?> {
             @SuppressLint("SetTextI18n")
             override fun onResponse(
-                call: Call<TopLink?>,
-                response: Response<TopLink?>
+                call: Call<MainDataClass?>,
+                response: Response<MainDataClass?>
             ) {
                 if (response.isSuccessful) {
                     val data = response.body()
                     if (data != null) {
-                        adapter = LinkRecyclerViewAdapter(TopLink)
+                        adapter = TopLinkRecyclerViewAdapter(data.data.top_links)
+                        recyclerView.adapter = adapter
                     }
                 }
                 else {

@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.openinapp_assignment.model.RecentLink
+import com.example.openinapp_assignment.model.TopLink
 
-class LinkRecyclerViewAdapter(private val linksList: ArrayList<RecentLink>) : RecyclerView.Adapter<LinkRecyclerViewAdapter.ViewHolder>() {
+class TopLinkRecyclerViewAdapter(private val linksList: List<TopLink>) : RecyclerView.Adapter<TopLinkRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.link_list_item,parent,false)

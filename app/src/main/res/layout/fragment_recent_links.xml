@@ -5,17 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".RecentLinksFragment">
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRecentLinks"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Recent Links"
-            android:gravity="center"
-            android:textSize="25sp"/>
-
-    </ScrollView>
+        android:layout_height="match_parent"
+        tools:listitem="@layout/link_list_item"/>
 
 </FrameLayout>

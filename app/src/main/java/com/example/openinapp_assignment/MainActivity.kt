@@ -1,6 +1,7 @@
 package com.example.openinapp_assignment
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -11,6 +12,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.openinapp_assignment.api.RetrofitInstance
 import com.example.openinapp_assignment.databinding.ActivityMainBinding
 import com.example.openinapp_assignment.model.MainDataClass
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.tabs.TabLayout
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,6 +26,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private var mapData : HashMap<String, Int> = hashMapOf()
+
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -30,9 +37,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //API Call Section:
-        getData()
+        mapData = getData()
         binding.btRetry.setOnClickListener {
-            getData()
+            mapData = getData()
         }
 
         //Greetings Section:
@@ -50,6 +57,23 @@ class MainActivity : AppCompatActivity() {
                 tvGreeting.text = "Good Evening,"
             }
         }
+
+        //Graph Section:
+
+        val lineChart = binding.lineChart
+        val entries = mapData.entries.map { Entry(it.key.toFloat(), it.value.toFloat()) }
+        val dataSet = LineDataSet(entries, "Chart Label")
+        dataSet.color = Color.BLUE
+        dataSet.setDrawCircles(true)
+        dataSet.setDrawCircleHole(false)
+        val lineData = LineData(dataSet)
+        lineChart.data = lineData
+        lineChart.invalidate()
+        lineChart.setNoDataText("No data available")
+        lineChart.setNoDataTextColor(Color.BLACK)
+        lineChart.setDrawGridBackground(false)
+        lineChart.description = Description().apply { text = "" }
+        lineChart.legend.isEnabled = false
 
         //Top/Recent Links Section:
 
@@ -87,9 +111,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun getData(){
+    private fun getData() : HashMap<String,Int>{
         val pbApiCall = binding.pbApiCall
         val btRetry = binding.btRetry
+        var mapDATA: HashMap<String, Int> = hashMapOf()
         btRetry.isVisible = false
         btRetry.text = "Try Again"
         pbApiCall.isVisible = true
@@ -107,6 +132,7 @@ class MainActivity : AppCompatActivity() {
                         binding.tvName.text = (data.support_whatsapp_number + " 👋")
                         btRetry.text = "Refresh"
                         btRetry.isVisible = true
+                        mapDATA = data.data.overall_url_chart.mapData
                     }
                 }
                 else {
@@ -123,5 +149,7 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
+
+        return mapDATA
     }
 }

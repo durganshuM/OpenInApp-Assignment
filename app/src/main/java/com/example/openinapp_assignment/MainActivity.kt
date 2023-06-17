@@ -88,13 +88,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getData(){
-        val accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjU5MjcsImlhdCI6MTY3NDU1MDQ1MH0.dCkW0ox8tbjJA2GgUx2UEwNlbTZ7Rr38PVFJevYcXFI"
         val pbApiCall = binding.pbApiCall
         val btRetry = binding.btRetry
         btRetry.isVisible = false
+        btRetry.text = "Try Again"
         pbApiCall.isVisible = true
 
-        RetrofitInstance.apiService.getData(accessToken).enqueue(object : Callback<MainDataClass?> {
+        RetrofitInstance.apiService.getData().enqueue(object : Callback<MainDataClass?> {
+            @SuppressLint("SetTextI18n")
             override fun onResponse(
                 call: Call<MainDataClass?>,
                 response: Response<MainDataClass?>
@@ -103,7 +104,9 @@ class MainActivity : AppCompatActivity() {
                     val data = response.body()
                     if (data != null) {
                         pbApiCall.isVisible = false
-                        binding.tvName.text = data.status.toString()
+                        binding.tvName.text = (data.support_whatsapp_number + " 👋")
+                        btRetry.text = "Refresh"
+                        btRetry.isVisible = true
                     }
                 }
                 else {

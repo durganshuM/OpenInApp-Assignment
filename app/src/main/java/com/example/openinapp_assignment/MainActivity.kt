@@ -160,6 +160,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getData(){
         val pbApiCall = binding.pbApiCall
         val btRetry = binding.btRetry

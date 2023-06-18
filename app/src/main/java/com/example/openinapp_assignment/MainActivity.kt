@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -178,11 +177,12 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val data = response.body()
                     if (data != null) {
+                        //User Name Section:
+
                         pbApiCall.isVisible = false
                         binding.tvName.text = (data.support_whatsapp_number + " 👋")
                         btRetry.text = "Refresh"
                         btRetry.isVisible = true
-                        Log.d("GetData_TAG",data.data.overall_url_chart.toString())
                     }
                 }
                 else {

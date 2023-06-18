@@ -129,6 +129,7 @@
                     app:tabIndicatorAnimationMode="elastic"
                     app:tabIndicatorColor="@null"
                     app:tabIndicatorGravity="stretch"
+                    app:tabIndicatorFullWidth="true"
                     app:tabMode="fixed"
                     app:tabSelectedTextColor="@color/white" />
 

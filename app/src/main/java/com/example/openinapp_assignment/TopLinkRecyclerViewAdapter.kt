@@ -1,10 +1,15 @@
 package com.example.openinapp_assignment
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -41,6 +46,20 @@ class TopLinkRecyclerViewAdapter(private val linksList: List<TopLink>) : Recycle
         val tvLinkDate : TextView = itemView.findViewById(R.id.tvLinkDate)
         val tvLinkClickCount : TextView = itemView.findViewById(R.id.tvLinkClickCount)
         val tvLink : TextView = itemView.findViewById(R.id.tvLink)
+        private val imgBtnCopy: ImageButton = itemView.findViewById(R.id.imgBtnCopy)
+
+        init {
+            imgBtnCopy.setOnClickListener {
+                val position = adapterPosition
+                val textToCopy = tvLink.text
+
+                val clipboardManager = itemView.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clipData = ClipData.newPlainText("Copied Text", textToCopy)
+                clipboardManager.setPrimaryClip(clipData)
+
+                Toast.makeText(itemView.context, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 }

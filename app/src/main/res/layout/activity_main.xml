@@ -78,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:textSize="16sp"
+                android:textColor="@color/grey"
                 tools:text="Good Morning," />
 
             <com.google.android.material.textview.MaterialTextView
@@ -131,7 +132,8 @@
                     app:tabIndicatorGravity="stretch"
                     app:tabIndicatorFullWidth="true"
                     app:tabMode="fixed"
-                    app:tabSelectedTextColor="@color/white" />
+                    app:tabSelectedTextColor="@color/white"
+                    app:tabTextColor="@color/grey" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager2Links"

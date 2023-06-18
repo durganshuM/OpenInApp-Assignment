@@ -181,7 +181,7 @@ class MainActivity : AppCompatActivity() {
                         //User Name Section:
 
                         pbApiCall.isVisible = false
-                        binding.tvName.text = (data.support_whatsapp_number + " 👋")
+                        binding.tvName.text = (data.top_location + " 👋")
                         btRetry.text = "Refresh"
                         btRetry.isVisible = true
                     }

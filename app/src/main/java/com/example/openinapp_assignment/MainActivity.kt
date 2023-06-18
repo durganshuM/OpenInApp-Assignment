@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.openinapp_assignment.api.RetrofitInstance
 import com.example.openinapp_assignment.databinding.ActivityMainBinding
 import com.example.openinapp_assignment.model.MainDataClass
-import com.github.mikephil.charting.components.Description
+import com.example.openinapp_assignment.model.OverallUrlChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -26,8 +27,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewPagerAdapter: ViewPagerAdapter
-    private var mapData : HashMap<String, Int> = hashMapOf()
-
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -37,9 +36,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //API Call Section:
-        mapData = getData()
+        getData()
         binding.btRetry.setOnClickListener {
-            mapData = getData()
+            getData()
         }
 
         //Greetings Section:
@@ -61,18 +60,69 @@ class MainActivity : AppCompatActivity() {
         //Graph Section:
 
         val lineChart = binding.lineChart
-        val entries = mapData.entries.map { Entry(it.key.toFloat(), it.value.toFloat()) }
-        val dataSet = LineDataSet(entries, "Chart Label")
+        val overallUrlChart = OverallUrlChart(
+            mapOf(
+                "2023-05-19" to 9,
+                "2023-05-20" to 4,
+                "2023-05-21" to 1,
+                "2023-05-22" to 10,
+                "2023-05-23" to 7,
+                "2023-05-24" to 9,
+                "2023-05-25" to 0,
+                "2023-05-26" to 2,
+                "2023-05-27" to 2,
+                "2023-05-28" to 1,
+                "2023-05-29" to 0,
+                "2023-05-30" to 2,
+                "2023-05-31" to 1,
+                "2023-06-01" to 1,
+                "2023-06-02" to 5,
+                "2023-06-03" to 1,
+                "2023-06-04" to 2,
+                "2023-06-05" to 19,
+                "2023-06-06" to 0,
+                "2023-06-07" to 3,
+                "2023-06-08" to 5,
+                "2023-06-09" to 11,
+                "2023-06-10" to 4,
+                "2023-06-11" to 9,
+                "2023-06-12" to 4,
+                "2023-06-13" to 20,
+                "2023-06-14" to 2,
+                "2023-06-15" to 7,
+                "2023-06-16" to 24,
+                "2023-06-17" to 2,
+                "2023-06-18" to 2
+            )
+        )
+
+// Convert the map data to Entry objects
+        val entries = mutableListOf<Entry>()
+        val data = overallUrlChart.mapData
+
+        data.entries.forEachIndexed { index, entry ->
+            val date = entry.key
+            val value = entry.value
+
+            entries.add(Entry(index.toFloat(), value.toFloat()))
+        }
+
+// Create a LineDataSet
+        val dataSet = LineDataSet(entries, "URL Clicks")
         dataSet.color = Color.BLUE
         dataSet.setDrawCircles(true)
         dataSet.setDrawCircleHole(false)
+
+// Create a LineData object and set it to the chart
         val lineData = LineData(dataSet)
         lineChart.data = lineData
+
+// Customize the appearance of the chart
         lineChart.invalidate()
         lineChart.setNoDataText("No data available")
         lineChart.setNoDataTextColor(Color.BLACK)
         lineChart.setDrawGridBackground(false)
-        lineChart.description = Description().apply { text = "" }
+        lineChart.description.text = ""
         lineChart.legend.isEnabled = false
 
         //Top/Recent Links Section:
@@ -111,10 +161,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun getData() : HashMap<String,Int>{
+    private fun getData(){
         val pbApiCall = binding.pbApiCall
         val btRetry = binding.btRetry
-        var mapDATA: HashMap<String, Int> = hashMapOf()
+//        var mapDATA: HashMap<String, Int> = hashMapOf()
         btRetry.isVisible = false
         btRetry.text = "Try Again"
         pbApiCall.isVisible = true
@@ -132,7 +182,7 @@ class MainActivity : AppCompatActivity() {
                         binding.tvName.text = (data.support_whatsapp_number + " 👋")
                         btRetry.text = "Refresh"
                         btRetry.isVisible = true
-                        mapDATA = data.data.overall_url_chart.mapData
+                        Log.d("GetData_TAG",data.data.overall_url_chart.toString())
                     }
                 }
                 else {
@@ -149,7 +199,5 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
-
-        return mapDATA
     }
 }
